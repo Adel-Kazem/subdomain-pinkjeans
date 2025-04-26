@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pinkJeans - Our Collection</title>
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF4081', // Pink color for pinkJeans
+                        secondary: '#212121', // Dark color for contrast
+                        accent: '#FCE4EC', // Light pink for backgrounds
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- AlpineJS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-white min-h-screen flex flex-col font-sans" x-data>
+<!-- SVG Sprite Definitions -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <!-- WhatsApp Icon -->
+    <symbol id="icon-whatsapp" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+    </symbol>
+
+    <!-- Cart Icon -->
+    <symbol id="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+    </symbol>
+
+    <!-- Menu Icon -->
+    <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 6h16M4 12h16M4 18h16" />
+    </symbol>
+
+    <!-- Filter Icon -->
+    <symbol id="icon-filter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
+    </symbol>
+
+    <!-- Grid Icon -->
+    <symbol id="icon-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+    </symbol>
+
+    <!-- List Icon -->
+    <symbol id="icon-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="8" y1="6" x2="21" y2="6"></line>
+        <line x1="8" y1="12" x2="21" y2="12"></line>
+        <line x1="8" y1="18" x2="21" y2="18"></line>
+        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+    </symbol>
+
+    <!-- Arrow Up Icon -->
+    <symbol id="icon-arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 15l7-7 7 7" />
+    </symbol>
+
+    <!-- Close/X Icon -->
+    <symbol id="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6L6 18M6 6l12 12" />
+    </symbol>
+</svg>
+
+<!-- Header -->
+<header class="bg-white shadow-sm sticky top-0 z-40">
+    <div class="container mx-auto px-4 py-4">
+        <div class="flex justify-between items-center">
+            <!-- Logo -->
+            <a href="index.html" class="text-3xl font-serif">
+                <h1 id="logo-text">
+                    <span id="logo-prefix" class="text-secondary">pink</span><span id="logo-highlight" class="text-primary font-bold">Jeans</span>
+                </h1>
+            </a>
+
+            <!-- Navigation - Desktop -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="index.html" id="nav-home" class="text-secondary hover:text-primary transition font-medium">Home</a>
+                <a href="products.html" id="nav-products" class="text-primary border-b-2 border-primary font-medium">Shop</a>
+                <a href="index.html#about" id="nav-about" class="text-secondary hover:text-primary transition font-medium">About</a>
+                <a href="index.html#contact" id="nav-contact" class="text-secondary hover:text-primary transition font-medium">Contact</a>
+            </nav>
+
+            <!-- Icons -->
+            <div class="flex items-center space-x-6">
+                <!-- Cart icon - Uses UI store directly, no x-data needed -->
+                <a href="cart.html" class="relative">
+                    <svg class="h-6 w-6 text-secondary hover:text-primary transition">
+                        <use href="#icon-cart"></use>
+                    </svg>
+                    <span
+                            x-show="$store.cart.getTotalItems() > 0"
+                            x-text="$store.cart.getTotalItems()"
+                            class="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+            </span>
+                </a>
+
+                <!-- Mobile menu button - Uses UI store directly -->
+                <button @click="$store.ui.toggleMenu()" class="md:hidden focus:outline-none">
+                    <svg class="h-6 w-6 text-secondary">
+                        <use href="#icon-menu"></use>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation - Uses UI store directly -->
+        <nav x-show="$store.ui.isMenuOpen" x-cloak @click.away="$store.ui.closeMenu()" class="md:hidden py-4">
+            <div class="flex flex-col space-y-3">
+                <a href="index.html" id="nav-mobile-home" class="text-secondary hover:text-primary transition font-medium">Home</a>
+                <a href="products.html" id="nav-mobile-products" class="text-primary font-medium">Shop</a>
+                <a href="index.html#about" id="nav-mobile-about" class="text-secondary hover:text-primary transition font-medium">About</a>
+                <a href="index.html#contact" id="nav-mobile-contact" class="text-secondary hover:text-primary transition font-medium">Contact</a>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="flex-grow">
+    <!-- Products Page Header -->
+    <section class="bg-accent py-12">
+        <div class="container mx-auto px-4">
+            <h1 id="page-title" class="text-4xl font-serif font-bold text-center">Our Collection</h1>
+            <p id="page-subtitle" class="text-center text-secondary/70 mt-4">Discover timeless pieces designed for the modern woman</p>
+        </div>
+    </section>
+
+    <!-- Products Section - ALL elements must be inside productCatalog container -->
+    <div x-data="productCatalog({
+      products: PRODUCTS,
+      categories: CATEGORIES,
+      defaultView: 'grid',
+      defaultSort: 'featured'
+    })" x-cloak class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Mobile Filter Toggle - MUST be inside productCatalog container -->
+                <div class="lg:hidden flex justify-between items-center mb-4">
+                    <button
+                            @click="mobileFiltersOpen = !mobileFiltersOpen"
+                            class="flex items-center space-x-2 bg-accent text-secondary py-2 px-4 rounded">
+                        <svg class="w-5 h-5"><use href="#icon-filter"></use></svg>
+                        <span>Filters</span>
+                    </button>
+
+                    <!-- View Toggle - Mobile -->
+                    <div class="flex space-x-2">
+                        <button
+                                @click="setView('grid')"
+                                :class="{'bg-primary text-white': view === 'grid', 'bg-accent text-secondary': view !== 'grid'}"
+                                class="p-2 rounded">
+                            <svg class="w-5 h-5"><use href="#icon-grid"></use></svg>
+                        </button>
+                        <button
+                                @click="setView('list')"
+                                :class="{'bg-primary text-white': view === 'list', 'bg-accent text-secondary': view !== 'list'}"
+                                class="p-2 rounded">
+                            <svg class="w-5 h-5"><use href="#icon-list"></use></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Filter Overlay - MUST be inside productCatalog container -->
+                <div
+                        x-show="mobileFiltersOpen"
+                        class="fixed inset-0 bg-black bg-opacity-50 z-40"
+                        @click="mobileFiltersOpen = false">
+                </div>
+
+                <!-- Filters Sidebar - MUST be inside productCatalog container -->
+                <div
+                        :class="{'fixed inset-y-0 right-0 w-3/4 max-w-xs bg-white z-50 transform transition-transform duration-300 ease-in-out': true, 'translate-x-full': !mobileFiltersOpen, 'translate-x-0': mobileFiltersOpen, 'lg:relative lg:transform-none lg:translate-x-0 lg:w-64': true}">
+                    <div class="p-6 lg:p-0">
+                        <!-- Mobile Close Button -->
+                        <div class="flex justify-between items-center mb-6 lg:hidden">
+                            <h3 class="text-lg font-bold">Filters</h3>
+                            <button @click="mobileFiltersOpen = false" class="text-secondary hover:text-primary">
+                                <svg class="w-6 h-6"><use href="#icon-x"></use></svg>
+                            </button>
+                        </div>
+
+                        <!-- Search -->
+                        <div class="mb-8">
+                            <h3 id="search-heading" class="text-sm uppercase tracking-widest font-medium mb-4">Search</h3>
+                            <input
+                                    type="text"
+                                    x-model="searchQuery"
+                                    placeholder="Search products..."
+                                    id="search-input"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-primary">
+                        </div>
+
+                        <!-- Categories -->
+                        <div class="mb-8">
+                            <h3 id="categories-heading" class="text-sm uppercase tracking-widest font-medium mb-4">Categories</h3>
+                            <div class="space-y-2">
+                                <button
+                                        @click="selectedCategory = null"
+                                        :class="{'text-primary font-medium': selectedCategory === null}"
+                                        class="block w-full text-left py-1 hover:text-primary transition">
+                                    All Categories
+                                </button>
+                                <template x-for="category in categories" :key="category.id">
+                                    <button
+                                            @click="selectedCategory = category.id"
+                                            :class="{'text-primary font-medium': selectedCategory === category.id}"
+                                            class="block w-full text-left py-1 hover:text-primary transition pl-4"
+                                            x-text="category.name">
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Price Filters -->
+                        <div class="mb-8">
+                            <h3 id="price-heading" class="text-sm uppercase tracking-widest font-medium mb-4">Price Range</h3>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input
+                                            type="checkbox"
+                                            x-model="priceRanges"
+                                            value="0-50"
+                                            class="form-checkbox text-primary rounded">
+                                    <span class="ml-2">Under $50</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input
+                                            type="checkbox"
+                                            x-model="priceRanges"
+                                            value="50-100"
+                                            class="form-checkbox text-primary rounded">
+                                    <span class="ml-2">$50 - $100</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input
+                                            type="checkbox"
+                                            x-model="priceRanges"
+                                            value="100-200"
+                                            class="form-checkbox text-primary rounded">
+                                    <span class="ml-2">$100 - $200</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input
+                                            type="checkbox"
+                                            x-model="priceRanges"
+                                            value="200+"
+                                            class="form-checkbox text-primary rounded">
+                                    <span class="ml-2">$200+</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Status Filters -->
+                        <div class="mb-8">
+                            <h3 id="status-heading" class="text-sm uppercase tracking-widest font-medium mb-4">Filter By</h3>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input
+                                            type="checkbox"
+                                            x-model="showNew"
+                                            class="form-checkbox text-primary rounded">
+                                    <span class="ml-2">New Arrivals</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input
+                                            type="checkbox"
+                                            x-model="showSale"
+                                            class="form-checkbox text-primary rounded">
+                                    <span class="ml-2">On Sale</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input
+                                            type="checkbox"
+                                            x-model="inStock"
+                                            class="form-checkbox text-primary rounded">
+                                    <span class="ml-2">In Stock Only</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Clear Filters Button -->
+                        <button
+                                @click="clearFilters()"
+                                class="w-full bg-secondary text-white py-2 px-4 rounded hover:bg-secondary/90 transition">
+                            Clear All Filters
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Products Grid/List - MUST be inside productCatalog container -->
+                <div class="flex-1">
+                    <!-- Sort and View Controls -->
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <select
+                                    id="sort-select"
+                                    x-model="sortBy"
+                                    class="px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-primary">
+                                <option value="featured">Featured</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="newest">Newest</option>
+                                <option value="name">Name</option>
+                            </select>
+                        </div>
+
+                        <!-- View Toggle - Desktop -->
+                        <div class="hidden lg:flex space-x-2">
+                            <button
+                                    @click="setView('grid')"
+                                    :class="{'bg-primary text-white': view === 'grid', 'bg-accent text-secondary': view !== 'grid'}"
+                                    class="p-2 rounded">
+                                <svg class="w-5 h-5"><use href="#icon-grid"></use></svg>
+                            </button>
+                            <button
+                                    @click="setView('list')"
+                                    :class="{'bg-primary text-white': view === 'list', 'bg-accent text-secondary': view !== 'list'}"
+                                    class="p-2 rounded">
+                                <svg class="w-5 h-5"><use href="#icon-list"></use></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Results Count -->
+                    <p id="results-count" class="text-secondary/70 mb-6">
+                        <span x-text="getFilteredProducts().length"></span> products found
+                    </p>
+
+                    <!-- No Results Message -->
+                    <template x-if="getFilteredProducts().length === 0">
+                        <div class="text-center py-16">
+                            <p class="text-secondary/70 text-lg mb-6">
+                                No products match your filters.
+                            </p>
+                            <button
+                                    @click="clearFilters()"
+                                    class="text-primary border-b border-primary hover:text-secondary hover:border-secondary transition">
+                                Clear Filters
+                            </button>
+                        </div>
+                    </template>
+
+                    <!-- Product Grid/List -->
+                    <div
+                            :class="{
+                'grid gap-6': true,
+                'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3': view === 'grid',
+                'grid-cols-1': view === 'list'
+              }">
+                        <template x-for="product in getFilteredProducts()" :key="product.id">
+                            <div
+                                    :class="{
+                    'bg-white border border-gray-200 rounded-lg overflow-hidden group': true,
+                    'flex': view === 'list'
+                  }">
+                                <!-- Product Image -->
+                                <a
+                                        :href="'product.html?id=' + product.id"
+                                        :class="{
+                      'relative': true,
+                      'w-full h-80': view === 'grid',
+                      'w-48 h-64 flex-shrink-0': view === 'list'
+                    }">
+                                    <img
+                                            :src="product.images && product.images[0] ? product.images[0] : 'https://via.placeholder.com/500x500'"
+                                            :alt="product.name"
+                                            class="w-full h-full object-cover group-hover:opacity-90 transition">
+
+                                    <!-- Badges -->
+                                    <div class="absolute top-0 left-0 m-4 flex flex-col space-y-2">
+                                        <template x-if="product.isOnSale">
+                        <span class="inline-block px-3 py-1 bg-red-500 text-white text-xs uppercase tracking-wider font-medium rounded-full">
+                          Sale
+                        </span>
+                                        </template>
+                                        <template x-if="product.createdAt && (new Date() - new Date(product.createdAt)) < 7*24*60*60*1000">
+                        <span class="inline-block px-3 py-1 bg-primary text-white text-xs uppercase tracking-wider font-medium rounded-full">
+                          New
+                        </span>
+                                        </template>
+                                    </div>
+                                </a>
+
+                                <!-- Product Info -->
+                                <div
+                                        :class="{
+                      'p-4': true,
+                      'flex-1': view === 'list'
+                    }">
+                                    <a :href="'product.html?id=' + product.id">
+                                        <h3 class="font-serif text-xl font-medium mb-2" x-text="product.name"></h3>
+                                    </a>
+
+                                    <!-- Price -->
+                                    <div class="mb-4">
+                                        <template x-if="product.isOnSale && product.originalPrice">
+                                            <div class="flex items-center space-x-2">
+                                                <span class="text-lg font-medium text-red-500" x-text="'$' + product.base_price.toFixed(2)"></span>
+                                                <span class="text-secondary/50 line-through" x-text="'$' + product.originalPrice.toFixed(2)"></span>
+                                            </div>
+                                        </template>
+                                        <template x-if="!product.isOnSale || !product.originalPrice">
+                                            <span class="text-lg font-medium" x-text="'$' + product.base_price.toFixed(2)"></span>
+                                        </template>
+                                    </div>
+
+                                    <!-- Rating -->
+                                    <template x-if="product.rating">
+                                        <div class="flex items-center mb-4">
+                                            <template x-for="i in 5" :key="i">
+                                                <svg
+                                                        :class="{'text-yellow-400': i <= product.rating, 'text-gray-300': i > product.rating}"
+                                                        class="w-4 h-4"
+                                                        fill="currentColor"
+                                                        viewBox="0 0 20 20">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                </svg>
+                                            </template>
+                                            <span class="ml-2 text-sm text-secondary/70" x-text="'(' + product.reviews_count + ')'"></span>
+                                        </div>
+                                    </template>
+
+                                    <!-- Description (List view only) -->
+                                    <template x-if="view === 'list'">
+                                        <p class="text-secondary/70 mb-4 line-clamp-2" x-text="product.description"></p>
+                                    </template>
+
+                                    <!-- Action Buttons -->
+                                    <div class="flex space-x-2">
+                                        <a
+                                                :href="'product.html?id=' + product.id"
+                                                class="flex-1 bg-secondary text-white py-2 px-4 text-center rounded hover:bg-secondary/90 transition">
+                                            View Details
+                                        </a>
+                                        <button
+                                                @click="$store.ui.openWhatsApp('I am interested in ' + product.name + ' (SKU: ' + product.sku + '). Please provide more information.')"
+                                                class="p-2 border border-green-500 text-green-500 hover:bg-green-500 hover:text-white rounded transition">
+                                            <svg class="w-5 h-5"><use href="#icon-whatsapp"></use></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="bg-secondary text-white">
+    <div class="container mx-auto px-4 py-16">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+            <!-- Footer Column 1 -->
+            <div class="md:col-span-2">
+                <h3 id="footer-logo" class="font-serif text-2xl font-bold mb-6">
+                    <span>pink</span><span class="text-primary">Jeans</span>
+                </h3>
+                <p id="footer-about-text" class="text-white/80 font-light mb-6">
+                    Premium women's fashion designed for the modern woman who values quality and sophistication. Experience elegance in every stitch.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" id="social-facebook" class="text-white/60 hover:text-primary transition-colors">
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
+                        </svg>
+                    </a>
+                    <a href="#" id="social-instagram" class="text-white/60 hover:text-primary transition-colors">
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
+                    <a href="#" id="social-twitter" class="text-white/60 hover:text-primary transition-colors">
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Footer Column 2 -->
+            <div>
+                <h3 id="footer-heading-2" class="text-xl font-bold mb-4">Quick Links</h3>
+                <ul class="space-y-2 text-white/80 font-light">
+                    <li><a href="index.html" id="footer-link-home" class="hover:text-primary transition">Home</a></li>
+                    <li><a href="products.html" id="footer-link-products" class="hover:text-primary transition">Shop</a></li>
+                    <li><a href="index.html#about" id="footer-link-about" class="hover:text-primary transition">About</a></li>
+                    <li><a href="cart.html" id="footer-link-cart" class="hover:text-primary transition">Cart</a></li>
+                    <li><a href="index.html#contact" id="footer-link-contact" class="hover:text-primary transition">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Footer Column 3 -->
+            <div>
+                <h3 id="footer-heading-3" class="text-xl font-bold mb-4">Contact Us</h3>
+                <p id="footer-contact-email" class="text-white/80 font-light mb-2">Email: info@pinkjeans.com</p>
+                <p id="footer-contact-phone" class="text-white/80 font-light mb-4">Phone: (555) 123-4567</p>
+                <!-- WhatsApp Contact Button - Uses UI store directly -->
+                <button
+                        @click="$store.ui.openWhatsApp('Hello, I would like more information about your products.')"
+                        class="flex items-center space-x-2 text-white/80 hover:text-primary mt-4 transition">
+                    <svg class="h-6 w-6">
+                        <use href="#icon-whatsapp"></use>
+                    </svg>
+                    <span>Contact on WhatsApp</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="mt-16 pt-8 border-t border-white/10 text-center text-white/60">
+            <p id="footer-copyright" class="font-light">Website designed with ♥ by RN Team</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Back to top button - Uses UI store directly -->
+<button @click="$store.ui.scrollToTop()" class="fixed bottom-4 left-4 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary/90 transition">
+    <svg class="h-6 w-6">
+        <use href="#icon-arrow-up"></use>
+    </svg>
+</button>
+
+<!-- WhatsApp button - Uses UI store directly -->
+<button @click="$store.ui.openWhatsApp('Hello, I have a question about your products.')" class="fixed bottom-4 right-4 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 transition flex items-center justify-center">
+    <svg class="h-6 w-6">
+        <use href="#icon-whatsapp"></use>
+    </svg>
+</button>
+
+<!-- Cart notification - Uses UI store directly -->
+<div
+        x-show="$store.ui.showCartNotification"
+        x-cloak
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 transform translate-y-2"
+        x-transition:enter-end="opacity-100 transform translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 transform translate-y-0"
+        x-transition:leave-end="opacity-0 transform translate-y-2"
+        class="fixed bottom-20 right-4 bg-primary text-white p-4 rounded-lg shadow-lg">
+    Item added to cart!
+</div>
+
+<!-- JavaScript Files -->
+<script src="js/categories.js"></script>
+<script src="js/products.js"></script>
+<script src="js/app.js"></script>
+<script src="js/products-page.js"></script>
+</body>
+</html>
