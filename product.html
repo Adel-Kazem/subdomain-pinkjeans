@@ -209,10 +209,14 @@
                              @mouseenter="mouseEnter($event)"
                              @mouseleave="mouseLeave()"
                              @mousemove="mouseMove($event)"
+                             @touchstart="touchStart($event)"
+                             @touchmove="touchMove($event)"
+                             @touchend="touchEnd()"
                              @error="handleImageError($event)"
                              :style="imgStyle"
                              :alt="product.name"
                              class="product-main-image w-full h-full object-contain">
+
                     </div>
                 </div>
 
