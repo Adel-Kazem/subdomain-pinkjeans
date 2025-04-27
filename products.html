@@ -34,8 +34,37 @@
     <!-- Custom CSS -->
     <style>
         [x-cloak] { display: none !important; }
-    </style>
-</head>
+
+        /* Grid view - maintain aspect ratio */
+        .product-image-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 133.33%; /* 3:4 aspect ratio */
+            overflow: hidden;
+        }
+
+        .product-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* List view - fixed height */
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .product-info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+    </style></head>
 <body class="bg-white min-h-screen flex flex-col font-sans" x-data>
 <!-- SVG Sprite Definitions -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -368,52 +397,59 @@
                     </template>
 
                     <!-- Product Grid/List -->
+                    <!-- Product Grid/List -->
                     <div
                             :class="{
-                'grid gap-6': true,
-                'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3': view === 'grid',
-                'grid-cols-1': view === 'list'
-              }">
+    'grid gap-6': true,
+    'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3': view === 'grid',
+    'grid-cols-1': view === 'list'
+  }">
                         <template x-for="product in getFilteredProducts()" :key="product.id">
                             <div
                                     :class="{
-                    'bg-white border border-gray-200 rounded-lg overflow-hidden group': true,
-                    'flex': view === 'list'
-                  }">
+        'product-card bg-white border border-gray-200 rounded-lg overflow-hidden group': true,
+        'flex flex-row': view === 'list'
+      }">
                                 <!-- Product Image -->
                                 <a
                                         :href="'product.html?id=' + product.id"
                                         :class="{
-                      'relative': true,
-                      'w-full h-80': view === 'grid',
-                      'w-48 h-64 flex-shrink-0': view === 'list'
-                    }">
-                                    <img
-                                            :src="product.images && product.images[0] ? product.images[0] : 'https://via.placeholder.com/500x500'"
-                                            :alt="product.name"
-                                            class="w-full h-full object-cover group-hover:opacity-90 transition">
+          'relative block': true,
+          'w-full': view === 'grid',
+          'w-48 flex-shrink-0': view === 'list'
+        }">
+                                    <div :class="{
+          'product-image-container': view === 'grid',
+          'h-48': view === 'list'
+        }">
+                                        <img
+                                                :src="product.images && product.images[0] ? product.images[0] : 'https://via.placeholder.com/500x500'"
+                                                :alt="product.name"
+                                                class="product-image group-hover:opacity-90 transition"
+                                                :class="{'h-full w-full object-cover': view === 'list'}">
 
-                                    <!-- Badges -->
-                                    <div class="absolute top-0 left-0 m-4 flex flex-col space-y-2">
-                                        <template x-if="product.isOnSale">
-                        <span class="inline-block px-3 py-1 bg-red-500 text-white text-xs uppercase tracking-wider font-medium rounded-full">
-                          Sale
-                        </span>
-                                        </template>
-                                        <template x-if="product.createdAt && (new Date() - new Date(product.createdAt)) < 7*24*60*60*1000">
-                        <span class="inline-block px-3 py-1 bg-primary text-white text-xs uppercase tracking-wider font-medium rounded-full">
-                          New
-                        </span>
-                                        </template>
+                                        <!-- Badges -->
+                                        <div class="absolute top-0 left-0 m-4 flex flex-col space-y-2">
+                                            <template x-if="product.isOnSale">
+              <span class="inline-block px-3 py-1 bg-red-500 text-white text-xs uppercase tracking-wider font-medium rounded-full">
+                Sale
+              </span>
+                                            </template>
+                                            <template x-if="product.createdAt && (new Date() - new Date(product.createdAt)) < 7*24*60*60*1000">
+              <span class="inline-block px-3 py-1 bg-primary text-white text-xs uppercase tracking-wider font-medium rounded-full">
+                New
+              </span>
+                                            </template>
+                                        </div>
                                     </div>
                                 </a>
 
                                 <!-- Product Info -->
                                 <div
                                         :class="{
-                      'p-4': true,
-                      'flex-1': view === 'list'
-                    }">
+          'product-info p-4': true,
+          'flex-1 flex flex-col': view === 'list'
+        }">
                                     <a :href="'product.html?id=' + product.id">
                                         <h3 class="font-serif text-xl font-medium mb-2" x-text="product.name"></h3>
                                     </a>
@@ -452,8 +488,8 @@
                                         <p class="text-secondary/70 mb-4 line-clamp-2" x-text="product.description"></p>
                                     </template>
 
-                                    <!-- Action Buttons -->
-                                    <div class="flex space-x-2">
+                                    <!-- Action Buttons - Push to bottom in list view -->
+                                    <div class="flex space-x-2" :class="{'mt-auto': view === 'list'}">
                                         <a
                                                 :href="'product.html?id=' + product.id"
                                                 class="flex-1 bg-secondary text-white py-2 px-4 text-center rounded hover:bg-secondary/90 transition">
@@ -476,6 +512,8 @@
 </main>
 
 <!-- Footer -->
+
+<!-- Footer -->
 <footer class="bg-secondary text-white">
     <div class="container mx-auto px-4 py-16">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
@@ -485,7 +523,8 @@
                     <span>pink</span><span class="text-primary">Jeans</span>
                 </h3>
                 <p id="footer-about-text" class="text-white/80 font-light mb-6">
-                    Premium women's fashion designed for the modern woman who values quality and sophistication. Experience elegance in every stitch.
+                    Premium women's fashion designed for the modern woman who values quality and sophistication.
+                    Experience elegance in every stitch.
                 </p>
                 <div class="flex space-x-4">
                     <a href="#" id="social-facebook" class="text-white/60 hover:text-primary transition-colors">
@@ -511,10 +550,14 @@
                 <h3 id="footer-heading-2" class="text-xl font-bold mb-4">Quick Links</h3>
                 <ul class="space-y-2 text-white/80 font-light">
                     <li><a href="index.html" id="footer-link-home" class="hover:text-primary transition">Home</a></li>
-                    <li><a href="products.html" id="footer-link-products" class="hover:text-primary transition">Shop</a></li>
-                    <li><a href="index.html#about" id="footer-link-about" class="hover:text-primary transition">About</a></li>
+                    <li><a href="products.html" id="footer-link-products" class="hover:text-primary transition">Shop</a>
+                    </li>
+                    <li>
+                        <a href="index.html#about" id="footer-link-about" class="hover:text-primary transition">About</a>
+                    </li>
                     <li><a href="cart.html" id="footer-link-cart" class="hover:text-primary transition">Cart</a></li>
-                    <li><a href="index.html#contact" id="footer-link-contact" class="hover:text-primary transition">Contact</a></li>
+                    <li><a href="index.html#contact" id="footer-link-contact" class="hover:text-primary transition">Contact</a>
+                    </li>
                 </ul>
             </div>
 
