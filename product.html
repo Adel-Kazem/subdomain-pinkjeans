@@ -189,7 +189,8 @@
                 <span>/</span>
                 <a href="products.html" class="hover:text-primary transition">Shop</a>
                 <span>/</span>
-                <span class="text-primary" id="breadcrumb-current">Product Details</span>
+                <!-- Just after your breadcrumb element with id="breadcrumb-current" -->
+                <span class="text-primary" id="breadcrumb-current" x-text="$store.productData.currentProduct ? $store.productData.currentProduct.name : 'Product Details'"></span>
             </div>
         </div>
     </div>
@@ -198,24 +199,21 @@
     <div class="container mx-auto px-4 py-12">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <!-- Product Images - Using productViewer component -->
-            <div x-data="productViewer(PRODUCTS[0])" x-cloak>
+            <div x-data="productViewer($store.productData.currentProduct)" x-cloak>
                 <!-- Main Image Container -->
+                <!-- Main Image Container - Update this section -->
                 <div class="relative mb-4 overflow-hidden rounded-lg">
-                    <div class="main-image-container relative">
-                        <img
-                                x-ref="mainImage"
-                                :src="getSelectedImage()"
-                                @mouseenter="mouseEnter($event)"
-                                @mouseleave="mouseLeave()"
-                                @mousemove="mouseMove($event)"
-                                @error="handleImageError($event)"
-                                :style="imgStyle"
-                                :alt="product.name"
-                                class="product-main-image w-full h-auto">
+                    <div class="main-image-container relative aspect-w-4 aspect-h-3 h-[500px]">
+                        <img x-ref="mainImage"
+                             :src="getSelectedImage()"
+                             @mouseenter="mouseEnter($event)"
+                             @mouseleave="mouseLeave()"
+                             @mousemove="mouseMove($event)"
+                             @error="handleImageError($event)"
+                             :style="imgStyle"
+                             :alt="product.name"
+                             class="product-main-image w-full h-full object-contain">
                     </div>
-
-                    <!-- Zoom lens -->
-                    <div x-show="zoomed" x-ref="zoomLens" class="zoom-lens"></div>
                 </div>
 
                 <!-- Thumbnails -->
@@ -256,7 +254,7 @@
             </div>
 
             <!-- Product Info - Using productDetail component -->
-            <div x-data="productDetail({ product: PRODUCTS[0] })" x-cloak>
+            <div x-data="productDetail({ product: $store.productData.currentProduct })" x-cloak>
                 <!-- Product Title & Rating -->
                 <div class="mb-6">
                     <h1 id="product-title" class="text-3xl md:text-4xl font-serif font-bold mb-4" x-text="product.name"></h1>

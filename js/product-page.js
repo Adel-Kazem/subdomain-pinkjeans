@@ -1,5 +1,46 @@
 // product-page.js - Alpine.js Components for Product Detail Page
 document.addEventListener('alpine:init', () => {
+
+    Alpine.store('productData', {
+        currentProduct: null,
+
+        init() {
+            // Get the slug from URL
+            const slug = new URLSearchParams(window.location.search).get('slug');
+            const id = new URLSearchParams(window.location.search).get('id');
+
+            // Try to load by slug first (preferred)
+            if (slug && typeof PRODUCTS !== 'undefined') {
+                this.currentProduct = PRODUCTS.find(p => p.slug === slug);
+            }
+
+            // Fallback to ID if needed (for backward compatibility)
+            if (!this.currentProduct && id && typeof PRODUCTS !== 'undefined') {
+                const productId = parseInt(id);
+                this.currentProduct = PRODUCTS.find(p => p.id === productId);
+
+                // If found by ID, redirect to slug URL for SEO
+                if (this.currentProduct) {
+                    window.history.replaceState(
+                        {},
+                        document.title,
+                        `product.html?slug=${this.currentProduct.slug}`
+                    );
+                }
+            }
+
+            // Set default product if nothing found
+            if (!this.currentProduct && typeof PRODUCTS !== 'undefined' && PRODUCTS.length > 0) {
+                this.currentProduct = PRODUCTS[0];
+            }
+
+            // Update title and breadcrumb
+            if (this.currentProduct) {
+                document.title = `${this.currentProduct.name} - pinkJeans`;
+            }
+        }
+    });
+
     /**
      * Product Detail Component
      * Handles product variants, options selection, pricing, and stock
@@ -600,3 +641,4 @@ document.addEventListener('alpine:init', () => {
         };
     });
 });
+

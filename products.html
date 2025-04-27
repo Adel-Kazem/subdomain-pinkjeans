@@ -258,8 +258,8 @@
                                 </button>
                                 <template x-for="category in categories" :key="category.id">
                                     <button
-                                            @click="selectedCategory = category.id"
-                                            :class="{'text-primary font-medium': selectedCategory === category.id}"
+                                            @click="selectCategoryBySlug(category.slug)"
+                                            :class="{'text-primary font-medium': selectedCategorySlug === category.slug || selectedCategory === category.id}"
                                             class="block w-full text-left py-1 hover:text-primary transition pl-4"
                                             x-text="category.name">
                                     </button>
@@ -450,7 +450,7 @@
           'product-info p-4': true,
           'flex-1 flex flex-col': view === 'list'
         }">
-                                    <a :href="'product.html?id=' + product.id">
+                                    <a :href="'product.html?slug=' + product.slug">
                                         <h3 class="font-serif text-xl font-medium mb-2" x-text="product.name"></h3>
                                     </a>
 
