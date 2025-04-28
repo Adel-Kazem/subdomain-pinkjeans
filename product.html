@@ -219,13 +219,16 @@
                     <!-- Main product images -->
                     <template x-for="image in product.images" :key="image">
                         <div @click="selectImage(image)"
-                             :class="{'ring-2 ring-primary': selectedImage === image,
-                     'hover:ring-2 hover:ring-gray-300': selectedImage !== image}"
+                             :class="{
+            'ring-2 ring-primary scale-105': getSelectedImage() === image,
+            'hover:ring-2 hover:ring-gray-300': getSelectedImage() !== image
+         }"
                              class="flex-shrink-0 cursor-pointer rounded-md overflow-hidden transition-all duration-200 transform hover:scale-105"
                              data-thumbnail-type="main">
                             <img :src="image" :alt="`Product thumbnail`" class="h-20 w-20 object-cover">
                         </div>
                     </template>
+
 
                     <!-- Option-specific images -->
                     <template x-if="product.option_images">
