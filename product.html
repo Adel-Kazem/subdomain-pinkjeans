@@ -233,10 +233,12 @@
                             <template x-for="(images, optionValue) in optionValues" :key="optionValue">
                                 <template x-for="(img, imgIndex) in images" :key="imgIndex">
                                     <div @click="selectImage(img); selectOption(optionType, optionValue)"
-                                         :class="{'ring-2 ring-primary': selectedImage === img,
-                                 'hover:ring-2 hover:ring-gray-300': selectedImage !== img,
-                                 'opacity-75': selectedOptions[optionType] !== optionValue,
-                                 'opacity-100 scale-105': selectedOptions[optionType] === optionValue}"
+                                         :class="{
+      'ring-2 ring-primary': selectedImage === img || selectedOptions[optionType] === optionValue,
+      'hover:ring-2 hover:ring-gray-300': selectedImage !== img && selectedOptions[optionType] !== optionValue,
+      'opacity-75': selectedOptions[optionType] !== optionValue,
+      'opacity-100 scale-105': selectedOptions[optionType] === optionValue
+    }"
                                          class="flex-shrink-0 cursor-pointer rounded-md overflow-hidden transition-all duration-200 transform hover:scale-105 relative"
                                          data-thumbnail-type="option"
                                          :data-option-type="optionType"
