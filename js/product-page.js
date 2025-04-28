@@ -1,25 +1,20 @@
-// product-page.js - Alpine.js Components for Product Detail Page
 document.addEventListener('alpine:init', () => {
 
     Alpine.store('productData', {
         currentProduct: null,
 
         init() {
-            // Get the slug from URL
             const slug = new URLSearchParams(window.location.search).get('slug');
             const id = new URLSearchParams(window.location.search).get('id');
 
-            // Try to load by slug first (preferred)
             if (slug && typeof PRODUCTS !== 'undefined') {
                 this.currentProduct = PRODUCTS.find(p => p.slug === slug);
             }
 
-            // Fallback to ID if needed (for backward compatibility)
             if (!this.currentProduct && id && typeof PRODUCTS !== 'undefined') {
                 const productId = parseInt(id);
                 this.currentProduct = PRODUCTS.find(p => p.id === productId);
 
-                // If found by ID, redirect to slug URL for SEO
                 if (this.currentProduct) {
                     window.history.replaceState(
                         {},
@@ -29,22 +24,16 @@ document.addEventListener('alpine:init', () => {
                 }
             }
 
-            // Set default product if nothing found
             if (!this.currentProduct && typeof PRODUCTS !== 'undefined' && PRODUCTS.length > 0) {
                 this.currentProduct = PRODUCTS[0];
             }
 
-            // Update title and breadcrumb
             if (this.currentProduct) {
                 document.title = `${this.currentProduct.name} - pinkJeans`;
             }
         }
     });
 
-    /**
-     * Product Detail Component
-     * Handles product variants, options selection, pricing, and stock
-     */
     Alpine.data('productDetail', (config = {}) => {
         return {
             product: config.product || {},
@@ -52,7 +41,6 @@ document.addEventListener('alpine:init', () => {
             quantity: 1,
 
             init() {
-                // Initialize default option selections
                 if (this.product.options) {
                     Object.keys(this.product.options).forEach(optionName => {
                         if (this.product.options[optionName].length > 0) {
@@ -62,7 +50,6 @@ document.addEventListener('alpine:init', () => {
                 }
             },
 
-            // Utility functions
             formatPrice(price) {
                 return '$' + parseFloat(price).toFixed(2);
             },
@@ -75,19 +62,15 @@ document.addEventListener('alpine:init', () => {
                 return key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ');
             },
 
-            // Get current variant key based on selected options
             getVariantKey() {
                 if (!this.product.hasVariants) return null;
 
-                // Get option values in the order of options
                 const optionKeys = Object.keys(this.product.options);
                 const optionValues = optionKeys.map(key => this.selectedOptions[key]);
 
-                // Join them with | separator
                 return optionValues.join('|');
             },
 
-            // Check if current variant is in stock
             isVariantInStock() {
                 if (!this.product.hasVariants) {
                     return this.product.stock > 0;
@@ -101,7 +84,6 @@ document.addEventListener('alpine:init', () => {
                 return this.product.stock > 0;
             },
 
-            // Get stock level for current variant
             getVariantStock() {
                 if (!this.product.hasVariants) {
                     return this.product.stock;
@@ -115,11 +97,9 @@ document.addEventListener('alpine:init', () => {
                 return 0;
             },
 
-            // Get price for current variant
             getVariantPrice() {
                 let price = this.product.base_price || this.product.price || 0;
 
-                // Apply price adjustments based on selected options
                 if (this.product.option_price_adjustments) {
                     Object.entries(this.selectedOptions).forEach(([optionName, optionValue]) => {
                         if (
@@ -134,16 +114,13 @@ document.addEventListener('alpine:init', () => {
                 return price;
             },
 
-            // Get shipping cost for current variant
             getVariantShippingCost() {
-                // Check if shipping is free
                 if (this.product.free_shipping) {
                     return 0;
                 }
 
                 let shippingCost = this.product.base_shipping_cost || 0;
 
-                // Apply shipping adjustments based on selected options
                 if (this.product.option_shipping_adjustments) {
                     Object.entries(this.selectedOptions).forEach(([optionName, optionValue]) => {
                         if (
@@ -155,11 +132,9 @@ document.addEventListener('alpine:init', () => {
                     });
                 }
 
-                // If an option adjustment makes shipping negative or 0, it's free
                 return Math.max(0, shippingCost);
             },
 
-            // Get product weight (with overrides)
             getProductWeight() {
                 let weight = {...this.product.weight};
 
@@ -178,7 +153,6 @@ document.addEventListener('alpine:init', () => {
                 return weight;
             },
 
-            // Get product dimensions (with overrides)
             getProductDimensions() {
                 let dimensions = {...this.product.dimensions};
 
@@ -197,40 +171,47 @@ document.addEventListener('alpine:init', () => {
                 return dimensions;
             },
 
-            // Update variant information
             updateVariantInfo() {
-                // This triggers reactivity and updates the UI
                 this.selectedOptions = {...this.selectedOptions};
 
-                // Update the product viewer
                 const productViewer = document.querySelector('[x-data*="productViewer"]');
                 if (productViewer && this.product.hasVariants) {
                     const viewerData = Alpine.$data(productViewer);
                     if (viewerData) {
                         viewerData.selectedOptions = {...this.selectedOptions};
-                        viewerData.selectedImage = ''; // Force image update
+                        viewerData.selectedImage = '';
                     }
                 }
             },
 
-            // Check if an option value leads to available stock
             isOptionValueAvailable(optionType, optionValue) {
                 if (!this.product || !this.product.hasVariants) return true;
 
-                // Create a temporary selection with the current options
                 const tempSelection = {...this.selectedOptions};
                 tempSelection[optionType] = optionValue;
 
-                // Create variant key
                 const optionKeys = Object.keys(this.product.options);
                 const optionValues = optionKeys.map(key => tempSelection[key]);
                 const variantKey = optionValues.join('|');
 
-                // Check if this combination has stock
                 return (this.product.option_variants_stock[variantKey] || 0) > 0;
             },
 
-            // Add to cart
+            selectOption(option, value) {
+                this.selectedOptions[option] = value;
+                this.updateVariantInfo();
+
+                const productViewer = document.querySelector('[x-data*="productViewer"]');
+                if (productViewer) {
+                    const viewerData = Alpine.$data(productViewer);
+                    if (viewerData) {
+                        viewerData.selectedOptions[option] = value;
+                        viewerData.selectedImage = '';
+                        viewerData.scrollToOptionThumbnails();
+                    }
+                }
+            },
+
             addToCart() {
                 Alpine.store('cart').addItem(
                     this.product,
@@ -239,7 +220,6 @@ document.addEventListener('alpine:init', () => {
                 );
             },
 
-            // Increase quantity
             increaseQuantity() {
                 const maxStock = this.getVariantStock();
                 if (this.quantity < maxStock) {
@@ -247,7 +227,6 @@ document.addEventListener('alpine:init', () => {
                 }
             },
 
-            // Decrease quantity
             decreaseQuantity() {
                 if (this.quantity > 1) {
                     this.quantity--;
@@ -256,10 +235,6 @@ document.addEventListener('alpine:init', () => {
         };
     });
 
-    /**
-     * Product Viewer Component
-     * Handles product image viewing with zoom functionality
-     */
     Alpine.data('productViewer', function(product) {
         return {
             product: product,
@@ -268,7 +243,6 @@ document.addEventListener('alpine:init', () => {
             isScrollLeftEnd: true,
             isScrollRightEnd: false,
 
-            // Image zoom properties
             zoomed: false,
             isTouchDevice: false,
             scale: 2,
@@ -287,12 +261,10 @@ document.addEventListener('alpine:init', () => {
 
             init() {
                 if (this.product) {
-                    // Initialize selected image
                     this.selectedImage = this.product.images && this.product.images.length > 0
                         ? this.product.images[0]
                         : '';
 
-                    // Initialize selected options
                     this.selectedOptions = {};
                     if (this.product.options) {
                         for (const option in this.product.options) {
@@ -302,12 +274,10 @@ document.addEventListener('alpine:init', () => {
                         }
                     }
 
-                    // Initialize scroll position check
                     setTimeout(() => {
                         this.checkScrollPosition();
                     }, 100);
 
-                    // Initialize zoom features
                     this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
                     this.imgStyle = 'transform: scale(1); transform-origin: 50% 50%;';
                 }
@@ -322,12 +292,37 @@ document.addEventListener('alpine:init', () => {
                 return optionValues.join('|');
             },
 
+            formatVariantName(variant) {
+                return variant
+                    .split('|')
+                    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+                    .join(' + ');
+            },
+
+            selectVariantFromKey(key) {
+                if (!key) return;
+
+                const parts = key.split('|');
+                const optionNames = Object.keys(this.product.options);
+
+                for (let i = 0; i < parts.length && i < optionNames.length; i++) {
+                    this.selectedOptions[optionNames[i]] = parts[i];
+                }
+
+                const productDetail = this.$el.closest('[x-data*="productDetail"]');
+                if (productDetail) {
+                    const detailData = Alpine.$data(productDetail);
+                    if (detailData) {
+                        detailData.selectedOptions = {...this.selectedOptions};
+                        detailData.updateVariantInfo();
+                    }
+                }
+            },
+
             hasThumbnails() {
                 let count = 0;
-                // Count main images
                 count += this.product.images ? this.product.images.length : 0;
 
-                // Count option images
                 if (this.product.option_images) {
                     for (const optionType in this.product.option_images) {
                         for (const optionValue in this.product.option_images[optionType]) {
@@ -336,7 +331,6 @@ document.addEventListener('alpine:init', () => {
                     }
                 }
 
-                // Count variant images
                 if (this.product.variant_images) {
                     for (const key in this.product.variant_images) {
                         if (Array.isArray(this.product.variant_images[key])) {
@@ -354,19 +348,16 @@ document.addEventListener('alpine:init', () => {
                 if (!this.product) return '';
 
                 try {
-                    // If an image has been manually selected, use that
                     if (this.selectedImage) {
                         return this.selectedImage;
                     }
 
-                    // Check for variant-specific images
                     const variantKey = this.getVariantKey();
                     if (variantKey && this.product.variant_images && this.product.variant_images[variantKey]) {
                         const variantImage = this.product.variant_images[variantKey];
                         return Array.isArray(variantImage) ? variantImage[0] : variantImage;
                     }
 
-                    // Check for option-specific images
                     if (this.product.option_images) {
                         for (const [option, value] of Object.entries(this.selectedOptions)) {
                             if (
@@ -379,7 +370,6 @@ document.addEventListener('alpine:init', () => {
                         }
                     }
 
-                    // Default to first product image
                     return this.product.images && this.product.images.length > 0
                         ? this.product.images[0]
                         : '';
@@ -394,6 +384,27 @@ document.addEventListener('alpine:init', () => {
             selectImage(image) {
                 this.selectedImage = image;
                 this.resetZoom();
+
+                if (this.product.option_images) {
+                    for (const [option, values] of Object.entries(this.product.option_images)) {
+                        for (const [value, images] of Object.entries(values)) {
+                            if (images.includes(image)) {
+                                this.selectOption(option, value);
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                if (this.product.variant_images) {
+                    for (const [key, variantImage] of Object.entries(this.product.variant_images)) {
+                        if ((Array.isArray(variantImage) && variantImage.includes(image)) ||
+                            variantImage === image) {
+                            this.selectVariantFromKey(key);
+                            return;
+                        }
+                    }
+                }
             },
 
             selectOption(option, value) {
@@ -404,9 +415,17 @@ document.addEventListener('alpine:init', () => {
                 this.$nextTick(() => {
                     this.scrollToOptionThumbnails();
                 });
+
+                const productDetail = this.$el.closest('[x-data*="productDetail"]');
+                if (productDetail) {
+                    const detailData = Alpine.$data(productDetail);
+                    if (detailData) {
+                        detailData.selectedOptions[option] = value;
+                        detailData.updateVariantInfo();
+                    }
+                }
             },
 
-            // Thumbnail scrolling
             scrollThumbnails(direction) {
                 const container = this.$refs.thumbnailsContainer;
                 if (!container) return;
@@ -435,11 +454,41 @@ document.addEventListener('alpine:init', () => {
                 const container = this.$refs.thumbnailsContainer;
                 if (!container) return;
 
-                // For now, just check scroll position
-                this.checkScrollPosition();
+                this.$nextTick(() => {
+                    let thumbnailSelector = null;
+
+                    for (const [option, value] of Object.entries(this.selectedOptions)) {
+                        if (this.product.option_images &&
+                            this.product.option_images[option] &&
+                            this.product.option_images[option][value]) {
+
+                            thumbnailSelector = `[data-thumbnail-type="option"][data-option-type="${option}"][data-option-value="${value}"]`;
+                            break;
+                        }
+                    }
+
+                    if (!thumbnailSelector) {
+                        const variantKey = this.getVariantKey();
+                        if (variantKey && this.product.variant_images && this.product.variant_images[variantKey]) {
+                            thumbnailSelector = `[data-thumbnail-type="variant"][data-variant-key="${variantKey}"]`;
+                        }
+                    }
+
+                    if (thumbnailSelector) {
+                        const thumbnail = container.querySelector(thumbnailSelector);
+                        if (thumbnail) {
+                            thumbnail.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'nearest',
+                                inline: 'center'
+                            });
+                        }
+                    }
+
+                    this.checkScrollPosition();
+                });
             },
 
-            // Image Zoom Functionality
             mouseMove(e) {
                 if (!this.zoomed || this.isTouchDevice) return;
 
@@ -466,17 +515,13 @@ document.addEventListener('alpine:init', () => {
                 this.resetZoom();
             },
 
-            // Mobile zoom and drag handlers
             touchStart(e) {
                 if (e.touches.length > 1) return;
 
                 const now = Date.now();
-                // Double tap detection
                 if (now - this.lastTap < 300) {
-                    // Toggle zoom state
                     this.zoomed = !this.zoomed;
                     if (this.zoomed) {
-                        // Set zoom origin to touch point
                         const img = this.$refs.mainImage;
                         if (!img) return;
 
@@ -495,7 +540,6 @@ document.addEventListener('alpine:init', () => {
                     }
                     e.preventDefault();
                 } else if (this.zoomed) {
-                    // Start dragging
                     this.dragging = true;
                     this.dragStartX = e.touches[0].clientX - this.panX;
                     this.dragStartY = e.touches[0].clientY - this.panY;
@@ -513,7 +557,6 @@ document.addEventListener('alpine:init', () => {
                 this.panX = touchX - this.dragStartX;
                 this.panY = touchY - this.dragStartY;
 
-                // Limit panning to within image bounds
                 this.panX = Math.max(this.minPanX, Math.min(this.maxPanX, this.panX));
                 this.panY = Math.max(this.minPanY, Math.min(this.maxPanY, this.panY));
 
@@ -525,7 +568,6 @@ document.addEventListener('alpine:init', () => {
                 this.dragging = false;
             },
 
-            // Helper functions for zoom behavior
             updateZoomStyle() {
                 if (!this.zoomed) {
                     this.imgStyle = 'transform: scale(1); transform-origin: 50% 50%; transition: transform 0.3s ease;';
@@ -553,7 +595,6 @@ document.addEventListener('alpine:init', () => {
                 if (!img) return;
 
                 const rect = img.getBoundingClientRect();
-                // Calculate how much the image can be panned
                 this.maxPanX = (rect.width * (this.scale - 1)) / 2;
                 this.minPanX = -this.maxPanX;
                 this.maxPanY = (rect.height * (this.scale - 1)) / 2;
@@ -566,19 +607,12 @@ document.addEventListener('alpine:init', () => {
         };
     });
 
-    /**
-     * WhatsApp Product Inquiry Component
-     * Handles product inquiries via WhatsApp
-     */
     Alpine.data('whatsappInquiry', (config = {}) => {
         return {
-            // Configuration with defaults
             phoneNumber: config.phoneNumber || Alpine.store('ui').whatsAppNumber,
             buttonText: config.buttonText || 'Ask about this product',
 
-            // Send inquiry about current product
             inquireAboutProduct() {
-                // Get product information from parent component
                 const productDetail = this.$el.closest('[x-data*="productDetail"]');
                 if (!productDetail) return this.sendSimpleInquiry();
 
@@ -589,19 +623,15 @@ document.addEventListener('alpine:init', () => {
                 const quantity = productData.quantity;
                 const selectedOptions = productData.selectedOptions;
 
-                // Create the message
                 let message = `Hello, I'm interested in: ${product.name}`;
 
-                // Add quantity if more than 1
                 if (quantity > 1) {
                     message += ` (Quantity: ${quantity})`;
                 }
 
-                // Add price information
                 const variantPrice = productData.getVariantPrice();
                 message += `\nPrice: $${variantPrice.toFixed(2)}`;
 
-                // Add selected options if any
                 if (selectedOptions && Object.keys(selectedOptions).length > 0) {
                     message += '\nSelected options:';
                     Object.entries(selectedOptions).forEach(([option, value]) => {
@@ -609,31 +639,24 @@ document.addEventListener('alpine:init', () => {
                     });
                 }
 
-                // Add shipping information
                 const shippingCost = productData.getVariantShippingCost();
                 message += `\nShipping: ${shippingCost === 0 ? 'Free' : '$' + shippingCost.toFixed(2)}`;
 
-                // Add stock status
                 const stock = productData.getVariantStock();
                 message += `\nStock status: ${stock > 0 ? `${stock} available` : 'Out of stock'}`;
 
-                // Add product URL if available
                 const currentUrl = window.location.href;
                 message += `\n\nProduct link: ${currentUrl}`;
 
-                // Add closing message
                 message += '\n\nCould you provide me with more information about this product?';
 
-                // Send the message
                 this.sendWhatsAppMessage(message);
             },
 
-            // Simple inquiry without product details
             sendSimpleInquiry(customMessage = 'Hello, I have a question about your products.') {
                 this.sendWhatsAppMessage(customMessage);
             },
 
-            // Helper method to send WhatsApp message
             sendWhatsAppMessage(message) {
                 const encodedMessage = encodeURIComponent(message);
                 window.open(`https://wa.me/${this.phoneNumber}?text=${encodedMessage}`, '_blank');
@@ -641,4 +664,3 @@ document.addEventListener('alpine:init', () => {
         };
     });
 });
-

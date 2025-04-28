@@ -519,10 +519,8 @@ const PRODUCTS = [
             },
             "graphics": {
                 "nvidia rtx 4080 12GB": ["https://images.unsplash.com/photo-1555618568-bdf0a992c512?w=800&auto=format&fit=crop"],
-                "nvidia rtx 4090 16GB": ["https://images.unsplash.com/photo-1551643556-0e32e07d70dd?w=800&auto=format&fit=crop"]
             },
             "display": {
-                "15.6 QHD 240Hz": ["https://images.unsplash.com/photo-1551883040-0256b70c6ee9?w=800&auto=format&fit=crop"],
                 "17.3 QHD 240Hz": ["https://images.unsplash.com/photo-1533740566848-5f7d3e04e3d7?w=800&auto=format&fit=crop"]
             }
         },

@@ -214,30 +214,70 @@
                     <span x-show="!isTouchDevice" class="block">Hover to zoom. Mouse over different areas to explore details.</span>
                 </div>
 
-                <!-- Thumbnails -->
-                <div x-show="hasThumbnails()" class="relative mt-4" x-ref="thumbnailsContainer">
-                    <!-- Previous Button -->
-                    <button @click="scrollThumbnails('left')" x-show="!isScrollLeftEnd"
-                            class="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md z-10">
-                        &lt;
-                    </button>
+                <!-- Thumbnails Container -->
+                <div class="overflow-x-auto py-2 flex space-x-3 thumbnail-container" x-ref="thumbnailsContainer" @scroll="checkScrollPosition()">
+                    <!-- Main product images -->
+                    <template x-for="image in product.images" :key="image">
+                        <div @click="selectImage(image)"
+                             :class="{'ring-2 ring-primary': selectedImage === image,
+                     'hover:ring-2 hover:ring-gray-300': selectedImage !== image}"
+                             class="flex-shrink-0 cursor-pointer rounded-md overflow-hidden transition-all duration-200 transform hover:scale-105"
+                             data-thumbnail-type="main">
+                            <img :src="image" :alt="`Product thumbnail`" class="h-20 w-20 object-cover">
+                        </div>
+                    </template>
 
-                    <!-- Thumbnails Container -->
-                    <div class="overflow-x-auto py-2 flex space-x-3 thumbnail-container" @scroll="checkScrollPosition()">
-                        <template x-for="image in product.images" :key="image">
-                            <div @click="selectImage(image)"
-                                 :class="{'ring-2 ring-indigo-500': selectedImage === image, 'hover:ring-2 hover:ring-gray-300': selectedImage !== image}"
-                                 class="flex-shrink-0 cursor-pointer rounded-md overflow-hidden transition-all duration-200 transform hover:scale-105">
-                                <img :src="image" :alt="`Product thumbnail`" class="h-20 w-20 object-cover">
-                            </div>
+                    <!-- Option-specific images -->
+                    <template x-if="product.option_images">
+                        <template x-for="(optionValues, optionType) in product.option_images" :key="optionType">
+                            <template x-for="(images, optionValue) in optionValues" :key="optionValue">
+                                <template x-for="(img, imgIndex) in images" :key="imgIndex">
+                                    <div @click="selectImage(img); selectOption(optionType, optionValue)"
+                                         :class="{'ring-2 ring-primary': selectedImage === img,
+                                 'hover:ring-2 hover:ring-gray-300': selectedImage !== img,
+                                 'opacity-75': selectedOptions[optionType] !== optionValue,
+                                 'opacity-100 scale-105': selectedOptions[optionType] === optionValue}"
+                                         class="flex-shrink-0 cursor-pointer rounded-md overflow-hidden transition-all duration-200 transform hover:scale-105 relative"
+                                         data-thumbnail-type="option"
+                                         :data-option-type="optionType"
+                                         :data-option-value="optionValue">
+                                        <img :src="img" :alt="`${optionValue} thumbnail`" class="h-20 w-20 object-cover">
+                                        <span class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs py-1 text-center" x-text="optionValue"></span>
+                                    </div>
+                                </template>
+                            </template>
                         </template>
-                    </div>
+                    </template>
 
-                    <!-- Next Button -->
-                    <button @click="scrollThumbnails('right')" x-show="!isScrollRightEnd"
-                            class="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md z-10">
-                        &gt;
-                    </button>
+                    <!-- Variant-specific images -->
+                    <template x-if="product.variant_images">
+                        <template x-for="(value, key) in product.variant_images" :key="key">
+                            <template x-if="Array.isArray(value)">
+                                <template x-for="(img, imgIndex) in value" :key="imgIndex">
+                                    <div @click="selectImage(img); selectVariantFromKey(key)"
+                                         :class="{'ring-2 ring-primary': selectedImage === img,
+                                 'hover:ring-2 hover:ring-gray-300': selectedImage !== img}"
+                                         class="flex-shrink-0 cursor-pointer rounded-md overflow-hidden transition-all duration-200 transform hover:scale-105 relative"
+                                         data-thumbnail-type="variant"
+                                         :data-variant-key="key">
+                                        <img :src="img" :alt="`Variant thumbnail`" class="h-20 w-20 object-cover">
+                                        <span class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs py-1 text-center" x-text="formatVariantName(key)"></span>
+                                    </div>
+                                </template>
+                            </template>
+                            <template x-if="!Array.isArray(value)">
+                                <div @click="selectImage(value); selectVariantFromKey(key)"
+                                     :class="{'ring-2 ring-primary': selectedImage === value,
+                             'hover:ring-2 hover:ring-gray-300': selectedImage !== value}"
+                                     class="flex-shrink-0 cursor-pointer rounded-md overflow-hidden transition-all duration-200 transform hover:scale-105 relative"
+                                     data-thumbnail-type="variant"
+                                     :data-variant-key="key">
+                                    <img :src="value" :alt="`Variant thumbnail`" class="h-20 w-20 object-cover">
+                                    <span class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs py-1 text-center" x-text="formatVariantName(key)"></span>
+                                </div>
+                            </template>
+                        </template>
+                    </template>
                 </div>
             </div>
 
