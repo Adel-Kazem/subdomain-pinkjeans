@@ -232,21 +232,22 @@
                         <template x-for="(optionValues, optionType) in product.option_images" :key="optionType">
                             <template x-for="(images, optionValue) in optionValues" :key="optionValue">
                                 <template x-for="(img, imgIndex) in images" :key="imgIndex">
-                                    <div @click="selectImage(img); selectOption(optionType, optionValue)"
-                                         :class="{
-      'ring-2 ring-primary': selectedImage === img || selectedOptions[optionType] === optionValue,
-      'hover:ring-2 hover:ring-gray-300': selectedImage !== img && selectedOptions[optionType] !== optionValue,
-      'opacity-75': selectedOptions[optionType] !== optionValue,
-      'opacity-100 scale-105': selectedOptions[optionType] === optionValue
-    }"
-                                         class="flex-shrink-0 cursor-pointer rounded-md overflow-hidden transition-all duration-200 transform hover:scale-105 relative"
-                                         data-thumbnail-type="option"
-                                         :data-option-type="optionType"
-                                         :data-option-value="optionValue">
+                                    <div
+                                            @click="selectImage(img); selectOption(optionType, optionValue)"
+                                            :class="{
+            'ring-2 ring-primary scale-105': getSelectedImage() === img,
+            'hover:ring-2 hover:ring-gray-300': getSelectedImage() !== img
+        }"
+                                            class="flex-shrink-0 cursor-pointer rounded-md overflow-hidden transition-all duration-200 transform hover:scale-105 relative"
+                                            data-thumbnail-type="option"
+                                            :data-option-type="optionType"
+                                            :data-option-value="optionValue"
+                                    >
                                         <img :src="img" :alt="`${optionValue} thumbnail`" class="h-20 w-20 object-cover">
                                         <span class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs py-1 text-center" x-text="optionValue"></span>
                                     </div>
                                 </template>
+
                             </template>
                         </template>
                     </template>
