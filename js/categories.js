@@ -102,5 +102,28 @@ const CATEGORIES = [
     ],
     created_at: "2025-01-01T00:00:00Z",
     updated_at: "2025-03-01T00:00:00Z"
+ },
+ {
+    id: 7,
+    name: "testMobile Duis maiores repelle",
+    slug: "Consequatur qui sunt",
+    description: "Incididunt quia pari",
+    imageUrl: "Aut obcaecati adipis",
+    featured: false,
+    parent_id: "3",
+    active: false,
+    display_order: "44",
+    productIds: [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    created_at: "2025-05-07T10:56:25.499Z",
+    updated_at: "2025-05-07T10:56:25.499Z"
  }
 ];
