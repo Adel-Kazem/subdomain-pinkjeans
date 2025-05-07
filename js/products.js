@@ -634,5 +634,90 @@ const PRODUCTS = [
     categories: [],
     createdAt: "2025-05-07T08:02:04.491Z",
     updatedAt: "2025-05-07T08:02:04.491Z"
+ },
+ {
+    id: 8,
+    name: "Sed necessitatibus n",
+    description: "Non aliquam nisi in ",
+    base_price: 16,
+    base_shipping_cost: 50,
+    free_shipping: false,
+    sku: "Enim in cupiditate a",
+    slug: "new-product",
+    brand: "In pariatur Aliquid",
+    rating: 0,
+    reviews_count: 0,
+    status: "archived",
+    isFeatured: true,
+    isOnSale: true,
+    requiresShipping: false,
+    requiresInventoryTracking: true,
+    stock: 0,
+    hasVariants: true,
+    totalVariantStock: 0,
+    lowStockThreshold: 5,
+    features: {},
+    images: [
+      "https://raw.githubusercontent.com/Adel-Kazem/subdomain-pinkjeans/main/products_images/1.png"
+    ],
+    options: {
+      newOption0: [
+        "yellow",
+        "red",
+        "blue ^ shoes"
+      ],
+      newOption1: [
+        "medium",
+        "large"
+      ]
+    },
+    option_images: {
+      newOption0: {
+        yellow: [
+          "https://raw.githubusercontent.com/Adel-Kazem/subdomain-pinkjeans/main/products_images/2.png"
+        ],
+        "New value": [
+          "https://raw.githubusercontent.com/Adel-Kazem/subdomain-pinkjeans/main/products_images/5.png"
+        ],
+        red: [
+          "https://raw.githubusercontent.com/Adel-Kazem/subdomain-pinkjeans/main/products_images/4.png"
+        ],
+        "blue ^ shoes": [
+          "https://raw.githubusercontent.com/Adel-Kazem/subdomain-pinkjeans/main/products_images/5.png"
+        ]
+      }
+    },
+    variant_images: {},
+    option_variants_stock: {
+      "yellow|medium": 0,
+      "yellow|large": 0,
+      "red|medium": 0,
+      "red|large": 0,
+      "blue ^ shoes|medium": 0,
+      "blue ^ shoes|large": 0
+    },
+    option_price_adjustments: {
+      newOption0: {
+        "blue ^ shoes": 10
+      },
+      newOption1: {
+        large: 5
+      }
+    },
+    option_shipping_adjustments: {},
+    weight: {
+      value: 26,
+      unit: "kg"
+    },
+    dimensions: {
+      length: 97,
+      width: 57,
+      height: 77,
+      unit: "mm"
+    },
+    option_dimension_overrides: {},
+    categories: [],
+    createdAt: "2025-05-07T08:35:16.460Z",
+    updatedAt: "2025-05-07T08:35:16.460Z"
  }
 ];
