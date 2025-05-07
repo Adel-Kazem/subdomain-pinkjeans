@@ -88,7 +88,8 @@ const PRODUCTS = [
       1,
       2,
       3,
-      7
+      7,
+      8
     ],
     upselling: [
       3
@@ -101,7 +102,7 @@ const PRODUCTS = [
       2
     ],
     createdAt: "2025-01-01T00:00:00Z",
-    updatedAt: "2025-05-07T10:56:25.503Z"
+    updatedAt: "2025-05-07T11:03:01.792Z"
  },
  {
     id: 2,
@@ -192,7 +193,8 @@ const PRODUCTS = [
       1,
       2,
       3,
-      7
+      7,
+      8
     ],
     upselling: [
       1,
@@ -206,7 +208,7 @@ const PRODUCTS = [
       1
     ],
     createdAt: "2025-01-15T00:00:00Z",
-    updatedAt: "2025-05-07T10:56:25.504Z"
+    updatedAt: "2025-05-07T11:03:01.792Z"
  },
  {
     id: 3,
@@ -287,7 +289,8 @@ const PRODUCTS = [
     categories: [
       1,
       5,
-      7
+      7,
+      8
     ],
     upselling: [],
     crossSelling: [
@@ -299,7 +302,7 @@ const PRODUCTS = [
       2
     ],
     createdAt: "2025-01-10T00:00:00Z",
-    updatedAt: "2025-05-07T10:56:25.504Z"
+    updatedAt: "2025-05-07T11:03:01.793Z"
  },
  {
     id: 4,
@@ -388,7 +391,8 @@ const PRODUCTS = [
     },
     categories: [
       1,
-      7
+      7,
+      8
     ],
     upselling: [
       5
@@ -400,7 +404,7 @@ const PRODUCTS = [
       5
     ],
     createdAt: "2025-01-20T00:00:00Z",
-    updatedAt: "2025-05-07T10:56:25.504Z"
+    updatedAt: "2025-05-07T11:03:01.794Z"
  },
  {
     id: 5,
@@ -479,7 +483,8 @@ const PRODUCTS = [
       1,
       2,
       4,
-      7
+      7,
+      8
     ],
     upselling: [
       1,
@@ -493,7 +498,7 @@ const PRODUCTS = [
       4
     ],
     createdAt: "2025-01-25T00:00:00Z",
-    updatedAt: "2025-05-07T10:56:25.505Z"
+    updatedAt: "2025-05-07T11:03:01.794Z"
  },
  {
     id: 6,
@@ -561,7 +566,8 @@ const PRODUCTS = [
     categories: [
       1,
       6,
-      7
+      7,
+      8
     ],
     upselling: [
       4,
@@ -576,7 +582,7 @@ const PRODUCTS = [
       5
     ],
     createdAt: "2025-03-01T00:00:00Z",
-    updatedAt: "2025-05-07T10:56:25.505Z"
+    updatedAt: "2025-05-07T11:03:01.795Z"
  },
  {
     id: 7,
@@ -638,10 +644,11 @@ const PRODUCTS = [
     },
     option_dimension_overrides: {},
     categories: [
-      7
+      7,
+      8
     ],
     createdAt: "2025-05-07T08:02:04.491Z",
-    updatedAt: "2025-05-07T10:56:25.506Z"
+    updatedAt: "2025-05-07T11:03:01.795Z"
  },
  {
     id: 8,
@@ -725,9 +732,10 @@ const PRODUCTS = [
     },
     option_dimension_overrides: {},
     categories: [
-      7
+      7,
+      8
     ],
     createdAt: "2025-05-07T08:35:16.460Z",
-    updatedAt: "2025-05-07T10:56:25.506Z"
+    updatedAt: "2025-05-07T11:03:01.796Z"
  }
 ];
