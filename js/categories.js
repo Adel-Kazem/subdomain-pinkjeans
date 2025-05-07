@@ -148,5 +148,28 @@ const CATEGORIES = [
     ],
     created_at: "2025-05-07T11:03:01.789Z",
     updated_at: "2025-05-07T11:03:01.789Z"
+ },
+ {
+    id: 9,
+    name: "test 3",
+    slug: "Eum dolor fugiat qu",
+    description: "Cum dolor dolor aute",
+    imageUrl: "Nisi facilis totam c",
+    featured: true,
+    parent_id: "1",
+    active: false,
+    display_order: "69",
+    productIds: [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    created_at: "2025-05-07T11:03:26.461Z",
+    updated_at: "2025-05-07T11:03:26.461Z"
  }
 ];
