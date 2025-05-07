@@ -125,5 +125,28 @@ const CATEGORIES = [
     ],
     created_at: "2025-05-07T10:56:25.499Z",
     updated_at: "2025-05-07T10:56:25.499Z"
+ },
+ {
+    id: 8,
+    name: "test 2",
+    slug: "Ipsa eaque necessit",
+    description: "Ut ut maiores tempor",
+    imageUrl: "Temporibus anim inci",
+    featured: false,
+    parent_id: "1",
+    active: false,
+    display_order: "79",
+    productIds: [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    created_at: "2025-05-07T11:03:01.789Z",
+    updated_at: "2025-05-07T11:03:01.789Z"
  }
 ];
