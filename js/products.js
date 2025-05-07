@@ -654,7 +654,7 @@ const PRODUCTS = [
     requiresInventoryTracking: true,
     stock: 0,
     hasVariants: true,
-    totalVariantStock: 0,
+    totalVariantStock: 60,
     lowStockThreshold: 5,
     features: {},
     images: [
@@ -689,12 +689,12 @@ const PRODUCTS = [
     },
     variant_images: {},
     option_variants_stock: {
-      "yellow|medium": 0,
-      "yellow|large": 0,
-      "red|medium": 0,
-      "red|large": 0,
-      "blue ^ shoes|medium": 0,
-      "blue ^ shoes|large": 0
+      "yellow|medium": 10,
+      "yellow|large": 10,
+      "red|medium": 10,
+      "red|large": 10,
+      "blue ^ shoes|medium": 10,
+      "blue ^ shoes|large": 10
     },
     option_price_adjustments: {
       newOption0: {
@@ -718,6 +718,6 @@ const PRODUCTS = [
     option_dimension_overrides: {},
     categories: [],
     createdAt: "2025-05-07T08:35:16.460Z",
-    updatedAt: "2025-05-07T08:40:08.051Z"
+    updatedAt: "2025-05-07T08:41:13.016Z"
  }
 ];
