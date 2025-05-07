@@ -171,5 +171,19 @@ const CATEGORIES = [
     ],
     created_at: "2025-05-07T11:03:26.461Z",
     updated_at: "2025-05-07T11:03:26.461Z"
+ },
+ {
+    id: 11,
+    name: "test 4",
+    slug: "new-category-11",
+    description: "asdf",
+    imageUrl: "",
+    featured: false,
+    parent_id: null,
+    active: true,
+    display_order: 100,
+    productIds: [],
+    created_at: "2025-05-07T11:04:13.405Z",
+    updated_at: "2025-05-07T11:04:13.405Z"
  }
 ];
