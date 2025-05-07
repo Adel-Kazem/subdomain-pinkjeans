@@ -647,7 +647,7 @@ const PRODUCTS = [
     brand: "In pariatur Aliquid",
     rating: 0,
     reviews_count: 0,
-    status: "archived",
+    status: "active",
     isFeatured: true,
     isOnSale: true,
     requiresShipping: false,
@@ -718,6 +718,6 @@ const PRODUCTS = [
     option_dimension_overrides: {},
     categories: [],
     createdAt: "2025-05-07T08:35:16.460Z",
-    updatedAt: "2025-05-07T08:35:16.460Z"
+    updatedAt: "2025-05-07T08:40:08.051Z"
  }
 ];
